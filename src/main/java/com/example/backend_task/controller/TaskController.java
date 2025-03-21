@@ -9,6 +9,11 @@ import java.util.Map;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.web.bind.annotation.RequestParam;
+
 @RestController
 @RequestMapping("/api/tasks")
 public class TaskController {
@@ -46,5 +51,14 @@ public class TaskController {
     @GetMapping("/grouped")
     public ResponseEntity<Map<String, List<Task>>> getTasksByCompletionStatus() {
         return ResponseEntity.ok(taskService.getTasksGroupedByCompletionStatus());
+    }
+    
+    @GetMapping("/paginated")
+    public ResponseEntity<Page<Task>> getTasksPaginated(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "5") int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Task> tasks = taskService.getAllTasksPaginated(pageable);
+        return ResponseEntity.ok(tasks);
     }
 }

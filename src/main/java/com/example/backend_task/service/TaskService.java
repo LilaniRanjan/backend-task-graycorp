@@ -5,6 +5,10 @@ import com.example.backend_task.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
+
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -68,6 +72,11 @@ public class TaskService {
 
         return tasks.stream()
                 .collect(Collectors.groupingBy(task -> task.isCompleted() ? "Completed" : "Pending"));
+    }
+
+//    Pagination Section
+    public Page<Task> getAllTasksPaginated(Pageable pageable) {
+        return taskRepository.findAll(pageable);
     }
 
     
