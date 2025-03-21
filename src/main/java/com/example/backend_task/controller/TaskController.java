@@ -4,6 +4,7 @@ import com.example.backend_task.entity.Task;
 import com.example.backend_task.service.TaskService;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -40,5 +41,10 @@ public class TaskController {
     public ResponseEntity<String> deleteTask(@PathVariable Long id) {
         taskService.deleteTask(id);
         return ResponseEntity.ok("Task deleted successfully");
+    }
+    
+    @GetMapping("/grouped")
+    public ResponseEntity<Map<String, List<Task>>> getTasksByCompletionStatus() {
+        return ResponseEntity.ok(taskService.getTasksGroupedByCompletionStatus());
     }
 }

@@ -6,7 +6,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskService {
@@ -58,6 +60,14 @@ public class TaskService {
             throw new RuntimeException("Task not found with ID: " + taskId);
         }
         taskRepository.deleteById(taskId);
+    }
+    
+//    Get Tasks by Completion Status
+    public Map<String, List<Task>> getTasksGroupedByCompletionStatus() {
+        List<Task> tasks = taskRepository.findAll();
+
+        return tasks.stream()
+                .collect(Collectors.groupingBy(task -> task.isCompleted() ? "Completed" : "Pending"));
     }
 
     

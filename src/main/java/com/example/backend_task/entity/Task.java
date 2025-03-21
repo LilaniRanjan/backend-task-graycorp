@@ -78,4 +78,8 @@ public class Task {
     protected void onUpdate() {
         this.updatedAt = LocalDateTime.now();
     }
+    
+    public boolean isCompleted() {  
+        return completed;
+    }
 }
