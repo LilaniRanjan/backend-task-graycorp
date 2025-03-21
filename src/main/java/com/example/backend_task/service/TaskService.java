@@ -5,6 +5,7 @@ import com.example.backend_task.repository.TaskRepository;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -17,7 +18,8 @@ public class TaskService {
         this.taskRepository = taskRepository;
         this.restTemplate = restTemplate;
     }
-
+    
+//    Create Task
     public Task createTask(Long taskId) {
         // Check if task already exists in the database
         Optional<Task> existingTask = taskRepository.findById(taskId);
@@ -35,6 +37,19 @@ public class TaskService {
         }
 
         throw new RuntimeException("Task not found in external API");
+    }
+    
+    
+    
+//    Get a Task by it;s Id
+    public Task getTaskById(Long taskId) {
+        return taskRepository.findById(taskId)
+                .orElseThrow(() -> new RuntimeException("Task not found with ID: " + taskId));
+    }
+
+//    Get All Task
+    public List<Task> getAllTasks() {
+        return taskRepository.findAll();
     }
     
     
