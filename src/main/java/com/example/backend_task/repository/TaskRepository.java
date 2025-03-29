@@ -14,7 +14,6 @@ import org.springframework.data.jpa.repository.JpaRepository;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, Long> {
     
-    // Custom method to get tasks by completion status
     List<Task> findByCompleted(Boolean completed);
     
     Page<Task> findAll(Pageable pageable);

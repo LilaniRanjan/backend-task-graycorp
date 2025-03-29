@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -56,6 +57,17 @@ public class TaskService {
 //    Get All Task
     public List<Task> getAllTasks() {
         return taskRepository.findAll();
+    }
+    
+//    Update a Task
+    public Task updateTask(Long taskId, Task updatedTask) {
+        Task existingTask = taskRepository.findById(taskId).orElseThrow();
+
+        existingTask.setTitle(updatedTask.getTitle());
+        existingTask.setCompleted(updatedTask.isCompleted());
+        existingTask.setUpdatedAt(LocalDateTime.now());
+
+        return taskRepository.save(existingTask);
     }
     
 //    Delete a task by Id

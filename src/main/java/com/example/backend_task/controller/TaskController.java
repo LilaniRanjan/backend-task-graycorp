@@ -18,47 +18,52 @@ import org.springframework.web.bind.annotation.RequestParam;
 @RequestMapping("/api/tasks")
 public class TaskController {
 
-    private final TaskService taskService;
+	private final TaskService taskService;
 
-    public TaskController(TaskService taskService) {
-        this.taskService = taskService;
-    }
+	public TaskController(TaskService taskService) {
+		this.taskService = taskService;
+	}
 
-    @PostMapping("/{id}")
-    public ResponseEntity<Task> createTask(@PathVariable Long id) {
-        Task task = taskService.createTask(id);
-        return ResponseEntity.ok(task);
-    }
-    
-    @GetMapping("/{id}")
-    public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
-        Task task = taskService.getTaskById(id);
-        return ResponseEntity.ok(task);
-    }
+	@PostMapping("/{id}")
+	public ResponseEntity<Task> createTask(@PathVariable Long id) {
+		Task task = taskService.createTask(id);
+		return ResponseEntity.ok(task);
+	}
 
-    @GetMapping
-    public ResponseEntity<List<Task>> getAllTasks() {
-        List<Task> tasks = taskService.getAllTasks();
-        return ResponseEntity.ok(tasks);
-    }
-    
-    @DeleteMapping("/{id}")
-    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
-        taskService.deleteTask(id);
-        return ResponseEntity.ok("Task deleted successfully");
-    }
-    
-    @GetMapping("/grouped")
-    public ResponseEntity<Map<String, List<Task>>> getTasksByCompletionStatus() {
-        return ResponseEntity.ok(taskService.getTasksGroupedByCompletionStatus());
-    }
-    
-    @GetMapping("/paginated")
-    public ResponseEntity<Page<Task>> getTasksPaginated(
-            @RequestParam(defaultValue = "0") int page,
-            @RequestParam(defaultValue = "5") int size) {
-        Pageable pageable = PageRequest.of(page, size);
-        Page<Task> tasks = taskService.getAllTasksPaginated(pageable);
-        return ResponseEntity.ok(tasks);
-    }
+	@GetMapping("/{id}")
+	public ResponseEntity<Task> getTaskById(@PathVariable Long id) {
+		Task task = taskService.getTaskById(id);
+		return ResponseEntity.ok(task);
+	}
+
+	@GetMapping
+	public ResponseEntity<List<Task>> getAllTasks() {
+		List<Task> tasks = taskService.getAllTasks();
+		return ResponseEntity.ok(tasks);
+	}
+
+	@DeleteMapping("/{id}")
+	public ResponseEntity<String> deleteTask(@PathVariable Long id) {
+		taskService.deleteTask(id);
+		return ResponseEntity.ok("Task deleted successfully");
+	}
+
+	@PutMapping("/{taskId}")
+	public ResponseEntity<Task> updateTask(@PathVariable Long taskId, @RequestBody Task updatedTask) {
+		Task task = taskService.updateTask(taskId, updatedTask);
+		return ResponseEntity.ok(task);
+	}
+
+	@GetMapping("/grouped")
+	public ResponseEntity<Map<String, List<Task>>> getTasksByCompletionStatus() {
+		return ResponseEntity.ok(taskService.getTasksGroupedByCompletionStatus());
+	}
+
+	@GetMapping("/paginated")
+	public ResponseEntity<Page<Task>> getTasksPaginated(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "5") int size) {
+		Pageable pageable = PageRequest.of(page, size);
+		Page<Task> tasks = taskService.getAllTasksPaginated(pageable);
+		return ResponseEntity.ok(tasks);
+	}
 }
